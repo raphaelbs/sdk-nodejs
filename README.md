@@ -25,6 +25,7 @@ at.then (
     },
     function (error) {
         console.log (error);
+		// error is an instance of MercadoPagoError
     });
 ```
 is the same as:
@@ -33,6 +34,7 @@ is the same as:
 mp.getAccessToken(function (err, accessToken){
     if (err) {
         console.log (err);
+		// err is an instance of MercadoPagoError
     } else {
         console.log (accessToken);
     }
@@ -40,6 +42,7 @@ mp.getAccessToken(function (err, accessToken){
 ```
 
 In order to use callbacks, simply pass a function as the last parameter.
+The error object is a [MercadoPagoError](#handling-errors) instance.
 
 <a name="basic-checkout"></a>
 ## Basic checkout
@@ -266,4 +269,18 @@ mp.get ({
 }).then (function (sites) {
     console.log (sites);
 });
+```
+
+### Handling errors
+
+The error object is a __MercadoPagoError__ instance, wich follows the pattern:
+
+```javascript
+{
+	cause: body.cause, // from the http response, very useful
+	name: 'MercadoPagoError',
+	message: body.message, // also from the http response
+	stack: (new Error()).stack;
+	status = body.status || 500;
+}
 ```
